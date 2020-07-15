@@ -130,7 +130,7 @@ void BSP_UART_Init()
 	/* 1 Enable peripherals and GPIO Clocks */
 	/* Enable GPIO TX/RX clock */
 	USARTx_TX_GPIO_CLK_ENABLE();
-	USARTx_RX_GPIO_CLK_ENABLE();
+	// USARTx_RX_GPIO_CLK_ENABLE();
 
 	/* Enable USART clock */
 	USARTx_CLK_ENABLE();
@@ -140,7 +140,7 @@ void BSP_UART_Init()
 	GPIO_InitStructure.Pin       = USARTx_TX_PIN;
 	GPIO_InitStructure.Mode      = GPIO_MODE_AF_PP;
 	GPIO_InitStructure.Pull      = GPIO_NOPULL;
-	GPIO_InitStructure.Speed     = GPIO_SPEED_FAST;
+	GPIO_InitStructure.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
 	GPIO_InitStructure.Alternate = USARTx_TX_AF;
 
 	HAL_GPIO_Init(USARTx_TX_GPIO_PORT, &GPIO_InitStructure);

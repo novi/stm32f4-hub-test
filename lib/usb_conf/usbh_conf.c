@@ -8,6 +8,7 @@
 #include "stm32f4xx_hal.h"
 #include "usbh_core.h"
 #include "stm32f4xx_hal_hcd.h"
+#include "stm32f4xx_usb_extra.h"
 
 #define HOST_POWERSW_FS_CLK_ENABLE()          __GPIOC_CLK_ENABLE()
 #define HOST_POWERSW_FS_PORT                  GPIOC
@@ -83,7 +84,7 @@ USBH_UsrLog("HAL_HCD_MspInit");
 #endif
 		/* Configure DM DP Pins */
 		GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
-		GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
