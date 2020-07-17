@@ -39,24 +39,15 @@
 #include "stm32f4_generic.h"
 
 
-GPIO_TypeDef* GPIO_PORT[LEDn] = {LED4_GPIO_PORT, 
-                                 LED3_GPIO_PORT, 
-                                 LED5_GPIO_PORT,
-                                 LED6_GPIO_PORT};
+GPIO_TypeDef* GPIO_PORT[LEDn] = {LED1_GPIO_PORT, 
+                                 LED2_GPIO_PORT,};
 
-const uint16_t GPIO_PIN[LEDn] = {LED4_PIN, 
-                                 LED3_PIN, 
-                                 LED5_PIN,
-                                 LED6_PIN};
+const uint16_t GPIO_PIN[LEDn] = {LED1_PIN, 
+                                 LED2_PIN,};
 
 /**
   * @brief  Configures LED GPIO.
   * @param  Led: Specifies the Led to be configured. 
-  *   This parameter can be one of following parameters:
-  *     @arg LED4
-  *     @arg LED3
-  *     @arg LED5
-  *     @arg LED6
   * @retval None
   */
 void BSP_LED_Init(Led_TypeDef Led)
@@ -79,12 +70,7 @@ void BSP_LED_Init(Led_TypeDef Led)
 
 /**
   * @brief  Turns selected LED On.
-  * @param  Led: Specifies the Led to be set on. 
-  *   This parameter can be one of following parameters:
-  *     @arg LED4
-  *     @arg LED3
-  *     @arg LED5
-  *     @arg LED6  
+  * @param  Led: Specifies the Led to be set on.
   * @retval None
   */
 void BSP_LED_On(Led_TypeDef Led)
@@ -94,12 +80,7 @@ void BSP_LED_On(Led_TypeDef Led)
 
 /**
   * @brief  Turns selected LED Off.
-  * @param  Led: Specifies the Led to be set off. 
-  *   This parameter can be one of following parameters:
-  *     @arg LED4
-  *     @arg LED3
-  *     @arg LED5
-  *     @arg LED6 
+  * @param  Led: Specifies the Led to be set off.
   * @retval None
   */
 void BSP_LED_Off(Led_TypeDef Led)
@@ -109,12 +90,7 @@ void BSP_LED_Off(Led_TypeDef Led)
 
 /**
   * @brief  Toggles the selected LED.
-  * @param  Led: Specifies the Led to be toggled. 
-  *   This parameter can be one of following parameters:
-  *     @arg LED4
-  *     @arg LED3
-  *     @arg LED5
-  *     @arg LED6  
+  * @param  Led: Specifies the Led to be toggled.
   * @retval None
   */
 void BSP_LED_Toggle(Led_TypeDef Led)
@@ -130,7 +106,7 @@ void BSP_UART_Init()
 	/* 1 Enable peripherals and GPIO Clocks */
 	/* Enable GPIO TX/RX clock */
 	USARTx_TX_GPIO_CLK_ENABLE();
-	// USARTx_RX_GPIO_CLK_ENABLE();
+  USARTx_RX_GPIO_CLK_ENABLE();
 
 	/* Enable USART clock */
 	USARTx_CLK_ENABLE();

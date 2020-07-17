@@ -50,7 +50,7 @@ int main(void)
 	HAL_Init();
 	SystemClock_Config();
 
-	BSP_LED_Init(LED4);
+	BSP_LED_Init(LED1);
 
 	BSP_UART_Init();
 
@@ -79,9 +79,9 @@ int main(void)
 			i = 0;
 
 		if(i > 0 && i <= 2500)
-			BSP_LED_On(LED4);
+			BSP_LED_On(LED1);
 		else
-			BSP_LED_Off(LED4);
+			BSP_LED_Off(LED1);
 
 		hub_process();
 	}

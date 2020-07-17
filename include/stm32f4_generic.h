@@ -9,50 +9,34 @@
    
 typedef enum 
 {
-  LED4 = 0,
-  LED3 = 1,
-  LED5 = 2,
-  LED6 = 3
+  LED1 = 0,
+  LED2 = 1
 } Led_TypeDef;
 
-#define LEDn                             4
+#define LEDn                             2
 
-#define LED4_PIN                         GPIO_PIN_12
-#define LED4_GPIO_PORT                   GPIOD
-#define LED4_GPIO_CLK_ENABLE()           __GPIOD_CLK_ENABLE()  
-#define LED4_GPIO_CLK_DISABLE()          __GPIOD_CLK_DISABLE()  
+#define LED1_PIN                         GPIO_PIN_1
+#define LED1_GPIO_PORT                   GPIOB
+#define LED1_GPIO_CLK_ENABLE()           __GPIOB_CLK_ENABLE()  
+#define LED1_GPIO_CLK_DISABLE()          __GPIOB_CLK_DISABLE()  
 
-#define LED3_PIN                         GPIO_PIN_13
-#define LED3_GPIO_PORT                   GPIOD
-#define LED3_GPIO_CLK_ENABLE()           __GPIOD_CLK_ENABLE()  
-#define LED3_GPIO_CLK_DISABLE()          __GPIOD_CLK_DISABLE()  
-  
-#define LED5_PIN                         GPIO_PIN_14
-#define LED5_GPIO_PORT                   GPIOD
-#define LED5_GPIO_CLK_ENABLE()           __GPIOD_CLK_ENABLE()  
-#define LED5_GPIO_CLK_DISABLE()          __GPIOD_CLK_DISABLE()  
+#define LED2_PIN                         GPIO_PIN_2
+#define LED2_GPIO_PORT                   GPIOB
+#define LED2_GPIO_CLK_ENABLE()           __GPIOB_CLK_ENABLE()  
+#define LED2_GPIO_CLK_DISABLE()          __GPIOB_CLK_DISABLE()   
 
-#define LED6_PIN                         GPIO_PIN_15
-#define LED6_GPIO_PORT                   GPIOD
-#define LED6_GPIO_CLK_ENABLE()           __GPIOD_CLK_ENABLE()  
-#define LED6_GPIO_CLK_DISABLE()          __GPIOD_CLK_DISABLE()  
-
-#define LEDx_GPIO_CLK_ENABLE(__INDEX__) do{if((__INDEX__) == 0) LED4_GPIO_CLK_ENABLE(); else \
-                                           if((__INDEX__) == 1) LED3_GPIO_CLK_ENABLE(); else \
-                                           if((__INDEX__) == 2) LED5_GPIO_CLK_ENABLE(); else \
-                                           if((__INDEX__) == 3) LED6_GPIO_CLK_ENABLE(); \
+#define LEDx_GPIO_CLK_ENABLE(__INDEX__) do{if((__INDEX__) == 0) LED1_GPIO_CLK_ENABLE(); else \
+                                           if((__INDEX__) == 1) LED2_GPIO_CLK_ENABLE(); \
                                            }while(0)
 
-#define LEDx_GPIO_CLK_DISABLE(__INDEX__) do{if((__INDEX__) == 0) LED4_GPIO_CLK_DISABLE(); else \
-                                            if((__INDEX__) == 1) LED3_GPIO_CLK_DISABLE(); else \
-                                            if((__INDEX__) == 2) LED5_GPIO_CLK_DISABLE(); else \
-                                            if((__INDEX__) == 3) LED6_GPIO_CLK_DISABLE(); \
+#define LEDx_GPIO_CLK_DISABLE(__INDEX__) do{if((__INDEX__) == 0) LED1_GPIO_CLK_DISABLE(); else \
+                                            if((__INDEX__) == 1) LED2_GPIO_CLK_DISABLE(); \
                                            }while(0)
 
 #define USARTx                       	 USART1
 
 #define USARTx_CLK_ENABLE()              __USART2_CLK_ENABLE()
-// #define USARTx_RX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
+#define USARTx_RX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
 #define USARTx_TX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
 
 // #define USARTx_FORCE_RESET()             __UART1_FORCE_RESET()
