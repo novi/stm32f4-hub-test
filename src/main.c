@@ -85,11 +85,13 @@ int main(void)
 
 	USBH_Start(&hUSBHost[0]);
 
+	int j = 0;
 	while(1)
 	{
 		if (i++ > 150000) {
 			i = 0;
-			LOG("test");
+			j++;
+			LOG("test %d", j);
 		}
 			
 
@@ -105,6 +107,7 @@ int main(void)
 
 void hub_process()
 {
+	// LOG("hub_process");
 	static uint8_t current_loop = -1;
 	static USBH_HandleTypeDef *_phost = 0;
 
@@ -118,6 +121,7 @@ void hub_process()
 
 	while(1)
 	{
+		// LOG("hub loop %d", current_loop);
 		current_loop++;
 
 		if(current_loop > MAX_HUB_PORTS)

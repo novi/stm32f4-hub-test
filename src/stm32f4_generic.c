@@ -37,7 +37,9 @@
   */
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4_generic.h"
+#include "usbh_conf.h"
 
+extern HCD_HandleTypeDef _hHCD[2];
 
 GPIO_TypeDef* GPIO_PORT[LEDn] = {LED1_GPIO_PORT, 
                                  LED2_GPIO_PORT,};
@@ -136,4 +138,13 @@ void BSP_UART_Init()
 void SysTick_Handler(void)
 {
   HAL_IncTick();
+	HAL_SYSTICK_IRQHandler();
+}
+
+void OTG_FS_IRQHandler(void)
+{
+	HAL_NVIC_ClearPendingIRQ(OTG_FS_IRQn);
+
+	if(_hHCD[ID_USB_HOST_FS].Instance == USB_OTG_FS)
+		HAL_HCD_IRQHandler(&_hHCD[ID_USB_HOST_FS]);
 }
