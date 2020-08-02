@@ -132,3 +132,8 @@ void BSP_UART_Init()
   */ 
     
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+void SysTick_Handler(void)
+{
+  HAL_IncTick();
+}

@@ -51,12 +51,24 @@ int main(void)
 	SystemClock_Config();
 
 	BSP_LED_Init(LED1);
+	
+	while(1)
+	{
+		if (i++ > 150000)
+			// i = 0;
+			break;
+
+		if(i > 0 && i <= 150000/2)
+			BSP_LED_On(LED1);
+		else
+			BSP_LED_Off(LED1);
+	}	
 
 	BSP_UART_Init();
 
-	LOG_INIT(USARTx, 15200);
+	LOG_INIT(USARTx, 115200);
 
-	LOG("\033[2J\033[H");
+	// LOG("\033[2J\033[H");
 	LOG(" ");
 	LOG("APP RUNNING...");
 	LOG("MCU-ID %08X", DBGMCU->IDCODE);
@@ -75,14 +87,18 @@ int main(void)
 
 	while(1)
 	{
-		if (i++ > 150000)
+		if (i++ > 150000) {
 			i = 0;
+			LOG("test");
+		}
+			
 
-		if(i > 0 && i <= 2500)
+		if(i > 0 && i <= 150000/2)
 			BSP_LED_On(LED1);
 		else
 			BSP_LED_Off(LED1);
 
+		// LOG("test\n");
 		hub_process();
 	}
 }
@@ -114,7 +130,7 @@ void hub_process()
 
 			if(_phost->valid == 3)
 			{
-//LOG("PROCESSING ATTACH %d", _phost->address);
+LOG("PROCESSING ATTACH %d", _phost->address);
 				_phost->valid = 1;
 				_phost->busy  = 1;
 			}
@@ -183,8 +199,10 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage 
   */
-  __HAL_RCC_PWR_CLK_ENABLE();
+  __HAL_RCC_SYSCFG_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE(); // TODO: need?
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+
   /** Initializes the CPU, AHB and APB busses clocks 
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;

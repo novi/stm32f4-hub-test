@@ -15,10 +15,10 @@ typedef enum
 
 #define LEDn                             2
 
-#define LED1_PIN                         GPIO_PIN_1
-#define LED1_GPIO_PORT                   GPIOB
-#define LED1_GPIO_CLK_ENABLE()           __GPIOB_CLK_ENABLE()  
-#define LED1_GPIO_CLK_DISABLE()          __GPIOB_CLK_DISABLE()  
+#define LED1_PIN                         GPIO_PIN_13
+#define LED1_GPIO_PORT                   GPIOC
+#define LED1_GPIO_CLK_ENABLE()           __GPIOC_CLK_ENABLE()  
+#define LED1_GPIO_CLK_DISABLE()          __GPIOC_CLK_DISABLE()  
 
 #define LED2_PIN                         GPIO_PIN_2
 #define LED2_GPIO_PORT                   GPIOB
@@ -33,7 +33,7 @@ typedef enum
                                             if((__INDEX__) == 1) LED2_GPIO_CLK_DISABLE(); \
                                            }while(0)
 
-#define USARTx                       	 USART1
+#define USARTx                       	 USART2
 
 #define USARTx_CLK_ENABLE()              __USART2_CLK_ENABLE()
 #define USARTx_RX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
