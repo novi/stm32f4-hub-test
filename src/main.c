@@ -184,6 +184,8 @@ void USBH_UserProcess (USBH_HandleTypeDef *pHost, uint8_t vId)
 			break;
 
 		case HOST_USER_UNRECOVERED_ERROR:
+			USBH_ErrLog("HOST_USER_UNRECOVERED_ERROR %d", hUSBHost[0].RequestState);
+			NVIC_SystemReset();
 			break;
 
 		default:
