@@ -113,6 +113,9 @@ static void USBH_ParseInterfaceDesc (USBH_InterfaceDescTypeDef  *if_descriptor, 
 USBH_StatusTypeDef USBH_Get_DevDesc(USBH_HandleTypeDef *phost, uint8_t length)
 {
   USBH_StatusTypeDef status;
+
+  USBH_DbgLog("USBH_GetDescriptor req size = %d, request data = ", length);
+  USBH_DbgLogArray(phost->device.Data, length);
   
   if((status = USBH_GetDescriptor(phost,
                                   USB_REQ_RECIPIENT_DEVICE | USB_REQ_TYPE_STANDARD,                          
@@ -122,6 +125,9 @@ USBH_StatusTypeDef USBH_Get_DevDesc(USBH_HandleTypeDef *phost, uint8_t length)
   {
     /* Commands successfully sent and Response Received */       
     USBH_ParseDevDesc(&phost->device.DevDesc, phost->device.Data, length);
+  }
+  if (status != USBH_OK) {
+    USBH_DbgLog("USBH_GetDescriptor failure status = %d", status);
   }
   return status;      
 }
@@ -338,7 +344,8 @@ static void  USBH_ParseDevDesc (USBH_DevDescTypeDef* dev_desc,
                                 uint16_t length)
 {
 USBH_UsrLog("USBH_ParseDevDesc");
-LOG_ARRAY(buf, length);
+USBH_DbgLogArray(buf, length);
+
   dev_desc->bLength            = *(uint8_t  *) (buf +  0);
   dev_desc->bDescriptorType    = *(uint8_t  *) (buf +  1);
   dev_desc->bcdUSB             = LE16 (buf +  2);
@@ -358,7 +365,7 @@ LOG_ARRAY(buf, length);
     dev_desc->iSerialNumber      = *(uint8_t  *) (buf + 16);
     dev_desc->bNumConfigurations = *(uint8_t  *) (buf + 17);
   }
-//USBH_UsrLog("USBH_ParseDevDesc: bMaxPacketSize: %d", dev_desc->bMaxPacketSize);
+  USBH_DbgLog("USBH_ParseDevDesc: bMaxPacketSize: %d", dev_desc->bMaxPacketSize);
 }
 
 static uint8_t USBH_ClassIsValid(USBH_HandleTypeDef *phost, uint8_t* buf)
@@ -397,6 +404,8 @@ static void USBH_ParseCfgDesc (USBH_HandleTypeDef *phost,
   int8_t                        ep_ix = 0;  
   
   pdesc   = (USBH_DescHeader_t *)buf;
+
+  USBH_DbgLogArray(buf, length);
   
   /* Parse configuration descriptor */
   cfg_desc->bLength             = *(uint8_t  *) (buf + 0);
@@ -414,37 +423,44 @@ static void USBH_ParseCfgDesc (USBH_HandleTypeDef *phost,
     ptr = USB_LEN_CFG_DESC;
     pif = (USBH_InterfaceDescTypeDef *)0;
     
-USBH_UsrLog("USBH_ParseCfgDesc, number of interfaces: %d", cfg_desc->bNumInterfaces);
+USBH_UsrLog("USBH_ParseCfgDesc, number of interfaces: %d, bLength: %d, total len: %d, buf len: %d",
+ cfg_desc->bNumInterfaces,
+ cfg_desc->bLength,
+  cfg_desc->wTotalLength,
+  length
+ );
+ 
     
-    while ((if_ix < USBH_MAX_NUM_INTERFACES ) && (ptr < cfg_desc->wTotalLength))
+    while ((if_ix < cfg_desc->bNumInterfaces) && (if_ix < USBH_MAX_NUM_INTERFACES ) && (ptr < cfg_desc->wTotalLength))
     {
+      
       pdesc = USBH_GetNextDesc((uint8_t *)pdesc, &ptr);
-      if (pdesc->bDescriptorType   == USB_DESC_TYPE_INTERFACE) 
-      {
-    	  if(USBH_ClassIsValid(phost, (uint8_t *)pdesc))
-      {
-        pif = &cfg_desc->Itf_Desc[if_ix];
-        USBH_ParseInterfaceDesc (pif, (uint8_t *)pdesc);            
-        
-        ep_ix = 0;
-        pep = (USBH_EpDescTypeDef *)0;        
-        while ((ep_ix < pif->bNumEndpoints) && (ptr < cfg_desc->wTotalLength))
-        {
-          pdesc = USBH_GetNextDesc((void* )pdesc, &ptr);
-          if (pdesc->bDescriptorType   == USB_DESC_TYPE_ENDPOINT) 
-          {  
-            pep = &cfg_desc->Itf_Desc[if_ix].Ep_Desc[ep_ix];
-            USBH_ParseEPDesc (pep, (uint8_t *)pdesc);
-            ep_ix++;
+      // LOG("pdesc %x, ptr %d, descripor type = %d", pdesc, ptr, pdesc->bDescriptorType);
+
+      if (pdesc->bDescriptorType   == USB_DESC_TYPE_INTERFACE) {
+    	  if(USBH_ClassIsValid(phost, (uint8_t *)pdesc)) {
+          pif = &cfg_desc->Itf_Desc[if_ix];
+          USBH_ParseInterfaceDesc (pif, (uint8_t *)pdesc);  
+
+          ep_ix = 0;
+          pep = (USBH_EpDescTypeDef *)0;        
+          while ((ep_ix < pif->bNumEndpoints) && (ptr < cfg_desc->wTotalLength))
+          {
+            pdesc = USBH_GetNextDesc((void* )pdesc, &ptr);
+            if (pdesc->bDescriptorType   == USB_DESC_TYPE_ENDPOINT) 
+            {  
+              pep = &cfg_desc->Itf_Desc[if_ix].Ep_Desc[ep_ix];
+              USBH_ParseEPDesc (pep, (uint8_t *)pdesc);
+              ep_ix++;
+            }
           }
+          if_ix++;
         }
-        if_ix++;
       }
-    }
     }
     if(cfg_desc->bNumInterfaces != if_ix)
     	cfg_desc->bNumInterfaces = if_ix;
-//LOG("num itf: %d", if_ix);
+    USBH_DbgLog("num itf: %d", if_ix);
   }  
 }
 

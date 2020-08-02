@@ -22,12 +22,12 @@
 #define USBH_KEEP_CFG_DESCRIPTOR              0
 #define USBH_MAX_SIZE_CONFIGURATION           0x200
 #define USBH_MAX_DATA_BUFFER                  0x200
-#define USBH_DEBUG_LEVEL                      3
+#define USBH_DEBUG_LEVEL                      1
 
 #define USBH_USE_OS                           0
 
 #define ID_USB_HOST_FS 						  0
-#define ID_USB_HOST_HS 						  1
+// #define ID_USB_HOST_HS 						  1
 
 
  /* Memory management macros */
@@ -45,7 +45,7 @@
 #endif
 
 
-#if (USBH_DEBUG_LEVEL > 1)
+#if (USBH_DEBUG_LEVEL > 0)
 #define  USBH_ErrLog 	LOG
 #else
 #define USBH_ErrLog(...)
@@ -58,5 +58,10 @@
 #define USBH_DbgLog(...)
 #endif
 
+#if (USBH_DEBUG_LEVEL > 2)
+#define  USBH_DbgLogArray	LOG_ARRAY
+#else
+#define USBH_DbgLogArray(...)
+#endif
 
 #endif /* USBH_CONF_H_ */

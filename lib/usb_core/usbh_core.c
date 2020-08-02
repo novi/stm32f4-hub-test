@@ -367,7 +367,7 @@ USBH_StatusTypeDef  USBH_Start  (USBH_HandleTypeDef *phost)
 USBH_StatusTypeDef  USBH_Stop   (USBH_HandleTypeDef *phost)
 {
   /* Stop and cleanup the low level driver  */
-  USBH_LL_Stop(phost);  
+  USBH_LL_Stop(phost);
   
   /* DeActivate VBUS on the port */ 
   USBH_LL_DriverVBUS (phost, FALSE);
@@ -677,6 +677,7 @@ static USBH_StatusTypeDef USBH_HandleEnum (USBH_HandleTypeDef *phost)
       }
       phost->Control.pipe_size = phost->device.DevDesc.bMaxPacketSize;
 
+      USBH_DbgLog("USBH_OpenPipe with speed = %d", phost->device.speed);
       
       /* modify control channels configuration for MaxPacket size */
       USBH_OpenPipe (phost,
@@ -696,7 +697,7 @@ static USBH_StatusTypeDef USBH_HandleEnum (USBH_HandleTypeDef *phost)
                            USBH_EP_CONTROL,
                            phost->Control.pipe_size);           
       
-USBH_UsrLog("Enum mps: %d, addr: %d", phost->Control.pipe_size, phost->device.address);
+USBH_UsrLog("Enum pipe size: %d, addr: %d", phost->Control.pipe_size, phost->device.address);
     }
     break;
     
@@ -706,8 +707,8 @@ USBH_UsrLog("Enum mps: %d, addr: %d", phost->Control.pipe_size, phost->device.ad
     {
 USBH_UsrLog("PID  : %xh", phost->device.DevDesc.idProduct );
 USBH_UsrLog("VID  : %xh", phost->device.DevDesc.idVendor );
-//USBH_UsrLog("PROTO: %xh", phost->device.DevDesc.bDeviceProtocol );
-//USBH_UsrLog("CLASS: %xh", phost->device.DevDesc.bDeviceClass );
+USBH_UsrLog("PROTO: %xh", phost->device.DevDesc.bDeviceProtocol );
+USBH_UsrLog("CLASS: %xh", phost->device.DevDesc.bDeviceClass );
       
       phost->EnumState = ENUM_SET_ADDR;
        

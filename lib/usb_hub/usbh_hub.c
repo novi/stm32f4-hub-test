@@ -217,8 +217,9 @@ static USBH_StatusTypeDef USBH_HUB_Process(USBH_HandleTypeDef *phost)
 
      	case HUB_SYNC:
      	    /* Sync with start of Even Frame */
-     	    if(phost->Timer & 1)
-     	    	HUB_Handle->state = HUB_GET_DATA;
+     	    if( (phost->Timer & 1) ) {
+				HUB_Handle->state = HUB_GET_DATA;
+			}
      		break;
 
     	case HUB_GET_DATA:
@@ -408,16 +409,16 @@ USBH_UsrLog("HUB_DEV_DETACHED %d", HUB_CurPort);
 
 static USBH_StatusTypeDef USBH_HUB_SOFProcess(USBH_HandleTypeDef *phost)
 {
-/*if(!phost->hub)
+if(!phost->hub)
 {
 USBH_UsrLog("EEEERRRRRRROOORRRRRRR");
 return USBH_OK;
-}*/
+}
 
 	HUB_HandleTypeDef *HUB_Handle = (HUB_HandleTypeDef *)phost->USBH_ClassTypeDef_pData[0];
 
-//if(HUB_Handle->poll != 255)
-//USBH_UsrLog("ERR %d %d", HUB_Handle->poll, HUB_Handle->length);
+if(HUB_Handle->poll != 255)
+USBH_UsrLog("ERR %d %d", HUB_Handle->poll, HUB_Handle->length);
 
 	if(HUB_Handle->state == HUB_POLL)
 	{
@@ -541,7 +542,7 @@ static uint8_t port_changed(uint8_t *b)
         if(b[0] & (1<<3)) { HUB_Change.bPorts.PORT_3 = 1; }
         if(b[0] & (1<<4)) { HUB_Change.bPorts.PORT_4 = 1; }
 
-//USBH_UsrLog("PORT STATUS CHANGE [0x%02X] [%d %d %d %d]", b[0], HUB_Change.bPorts.PORT_1, HUB_Change.bPorts.PORT_2, HUB_Change.bPorts.PORT_3, HUB_Change.bPorts.PORT_4);
+USBH_UsrLog("PORT STATUS CHANGE [0x%02X] [%d %d %d %d]", b[0], HUB_Change.bPorts.PORT_1, HUB_Change.bPorts.PORT_2, HUB_Change.bPorts.PORT_3, HUB_Change.bPorts.PORT_4);
 
         return HUB_Change.val > 0;
     }
@@ -592,7 +593,7 @@ USBH_UsrLog("detach %d", pphost->address);
 static void attach(USBH_HandleTypeDef *phost, uint16_t idx, uint8_t lowspeed)
 {
 	USBH_HandleTypeDef *pphost = &hUSBHost[idx];
-USBH_UsrLog("attach %d", idx);
+USBH_UsrLog("attach hub device %d", idx);
 
 	if(pphost->valid)
 	{
@@ -637,12 +638,11 @@ USBH_UsrLog("attach %d", idx);
 	pphost->busy  = 0;
 	pphost->valid = 3;
 
-//USBH_UsrLog("HUB stuff ok");
 }
 
 static void debug_port(uint8_t *buff, __IO USB_HUB_PORT_STATUS *info)
 {
-#if 0
+#if 1
     LOG1("PORT STATUS [%02X %02X %02X %02X] ", buff[0], buff[1], buff[2], buff[3]);
 
     if(info->wPortStatus.PORT_CONNECTION)       LOG1("PORT_CONNECTION ");

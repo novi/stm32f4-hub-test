@@ -224,7 +224,7 @@ USBH_UsrLog ("Mouse found.");
 
 				if(if_ix > 0 && HID_Handle == NULL)
 				{
-//LOG_ARRAY(phost->device.Data, hid_desc.wItemLength);
+USBH_DbgLogArray(phost->device.Data, hid_desc.wItemLength);
 
 					//Usage Page (Generic Desktop) 05 01
 					//Usage (Keyboard) 09 06
@@ -450,7 +450,7 @@ static USBH_StatusTypeDef USBH_HID_Process(USBH_HandleTypeDef *phost)
 			{
 				if(HID_Handle->DataReady == 0)
 				{
-//LOG_ARRAY(HID_Handle->pData, HID_Handle->length[0]);
+USBH_DbgLogArray(HID_Handle->pData, HID_Handle->length[0]);
 
 					fifo_write(&HID_Handle->fifo, HID_Handle->pData, HID_Handle->length[0]);
         			HID_Handle->DataReady = 1;

@@ -73,15 +73,13 @@ USBH_UsrLog("HAL_HCD_MspInit");
 	//else
 	 if(hHCD->Instance == USB_OTG_FS)
 	{
-		//PA9  = OTG_FS_VBUS
-		//PA11 = OTG_FS_DM
-		//PA12 = OTG_FS_DP
 
 		__GPIOA_CLK_ENABLE();
 
 #ifdef STM32F4DISCOVERY
 		HOST_POWERSW_FS_CLK_ENABLE();
 #endif
+
 		/* Configure DM DP Pins */
 		GPIO_InitStruct.Pin = GPIO_PIN_11 | GPIO_PIN_12;
 		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -91,6 +89,7 @@ USBH_UsrLog("HAL_HCD_MspInit");
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
     	/* Configure Power Switch Vbus Pin */
+      // TODO: for generic board
 #ifdef STM32F4DISCOVERY
 		GPIO_InitStruct.Pin = HOST_POWERSW_FS_VBUS;
 		GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
@@ -98,6 +97,7 @@ USBH_UsrLog("HAL_HCD_MspInit");
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
 		HAL_GPIO_Init(HOST_POWERSW_FS_PORT, &GPIO_InitStruct);
 #endif
+
 		/* Enable USB FS Clocks */
 		__USB_OTG_FS_CLK_ENABLE();
 

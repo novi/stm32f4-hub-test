@@ -1,5 +1,5 @@
 #include "stm32f4xx_usb_extra.h"
-
+#include "usbh_conf.h"
 /**
   * @brief  Stop Host Channel
   * @param  USBx : Selected device
@@ -46,6 +46,7 @@ HAL_StatusTypeDef USB_StopHostChannel(USB_OTG_GlobalTypeDef *USBx, uint8_t chnum
 
 HAL_StatusTypeDef HAL_HCD_StopHC(HCD_HandleTypeDef *hhcd, uint8_t chnum)
 {
+  USBH_DbgLog("HAL_HCD_StopHC ch=%d", chnum);
   __HAL_LOCK(hhcd);
   USB_StopHostChannel(hhcd->Instance, chnum);
   __HAL_UNLOCK(hhcd);
