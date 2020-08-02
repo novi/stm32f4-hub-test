@@ -670,9 +670,13 @@ static USBH_StatusTypeDef USBH_HandleEnum (USBH_HandleTypeDef *phost)
     /* Get Device Desc for only 1st 8 bytes : To get EP0 MaxPacketSize */
     if ( USBH_Get_DevDesc(phost, 8) == USBH_OK)
     {
+      if (phost->Control.pipe_size == phost->device.DevDesc.bMaxPacketSize) {
+        phost->EnumState = ENUM_GET_FULL_DEV_DESC;
+      } else {
+        USBH_DbgLog("pipe size is changed re-request enum.");
+      }
       phost->Control.pipe_size = phost->device.DevDesc.bMaxPacketSize;
 
-      phost->EnumState = ENUM_GET_FULL_DEV_DESC;
       
       /* modify control channels configuration for MaxPacket size */
       USBH_OpenPipe (phost,
