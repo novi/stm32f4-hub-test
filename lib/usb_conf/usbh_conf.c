@@ -34,7 +34,7 @@ void HAL_HCD_MspInit(HCD_HandleTypeDef *hHCD)
 {
 	GPIO_InitTypeDef  GPIO_InitStruct;
 
-USBH_UsrLog("HAL_HCD_MspInit");
+  // USBH_UsrLog("HAL_HCD_MspInit");
 
 // 	if(hHCD->Instance == USB_OTG_HS)
 // 	{

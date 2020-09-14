@@ -39,10 +39,6 @@ typedef enum
 #define USARTx_RX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
 #define USARTx_TX_GPIO_CLK_ENABLE()      __GPIOA_CLK_ENABLE()
 
-// #define USARTx_FORCE_RESET()             __UART1_FORCE_RESET()
-// #define USARTx_RELEASE_RESET()           __UART1_RELEASE_RESET()
-
-
 #define USARTx_TX_PIN                    GPIO_PIN_2
 #define USARTx_TX_GPIO_PORT              GPIOA
 #define USARTx_TX_AF                     GPIO_AF7_USART2
@@ -50,14 +46,10 @@ typedef enum
 #define USARTx_RX_GPIO_PORT              GPIOA
 #define USARTx_RX_AF                     GPIO_AF7_USART2
 
-
-void BSP_UART_Init();
-
 void BSP_LED_Init(Led_TypeDef Led);
 void BSP_LED_On(Led_TypeDef Led);
 void BSP_LED_Off(Led_TypeDef Led);
 void BSP_LED_Toggle(Led_TypeDef Led);
-
 
 
 #ifdef __cplusplus

@@ -62,9 +62,7 @@ int main(void)
 			BSP_LED_On(LED1);
 		else
 			BSP_LED_Off(LED1);
-	}	
-
-	BSP_UART_Init();
+	}
 
 	LOG_INIT(USARTx, 115200);
 
@@ -205,8 +203,7 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage 
   */
-  __HAL_RCC_SYSCFG_CLK_ENABLE();
-  __HAL_RCC_PWR_CLK_ENABLE(); // TODO: need?
+  __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
 
   /** Initializes the CPU, AHB and APB busses clocks 

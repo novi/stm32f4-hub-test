@@ -101,39 +101,41 @@ void BSP_LED_Toggle(Led_TypeDef Led)
 }
 
 
-void BSP_UART_Init()
+void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
-	GPIO_InitTypeDef GPIO_InitStructure;
+  if(huart->Instance==USART2) {
+    GPIO_InitTypeDef GPIO_InitStructure;
 
-	/* 1 Enable peripherals and GPIO Clocks */
-	/* Enable GPIO TX/RX clock */
-	USARTx_TX_GPIO_CLK_ENABLE();
-  USARTx_RX_GPIO_CLK_ENABLE();
+    /* 1 Enable peripherals and GPIO Clocks */
+    /* Enable GPIO TX/RX clock */
+    USARTx_TX_GPIO_CLK_ENABLE();
+    USARTx_RX_GPIO_CLK_ENABLE();
 
-	/* Enable USART clock */
-	USARTx_CLK_ENABLE();
+    /* Enable USART clock */
+    USARTx_CLK_ENABLE();
 
-	/* 2 Configure peripheral GPIO */
-	/* UART TX GPIO pin configuration  */
-	GPIO_InitStructure.Pin       = USARTx_TX_PIN;
-	GPIO_InitStructure.Mode      = GPIO_MODE_AF_PP;
-	GPIO_InitStructure.Pull      = GPIO_NOPULL;
-	GPIO_InitStructure.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
-	GPIO_InitStructure.Alternate = USARTx_TX_AF;
+    /* 2 Configure peripheral GPIO */
+    /* UART TX GPIO pin configuration  */
+    GPIO_InitStructure.Pin       = USARTx_TX_PIN;
+    GPIO_InitStructure.Mode      = GPIO_MODE_AF_PP;
+    GPIO_InitStructure.Pull      = GPIO_NOPULL;
+    GPIO_InitStructure.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStructure.Alternate = USARTx_TX_AF;
 
-	HAL_GPIO_Init(USARTx_TX_GPIO_PORT, &GPIO_InitStructure);
+    HAL_GPIO_Init(USARTx_TX_GPIO_PORT, &GPIO_InitStructure);
 
-	/* UART RX GPIO pin configuration  */
-	GPIO_InitStructure.Pin = USARTx_RX_PIN;
-	GPIO_InitStructure.Alternate = USARTx_RX_AF;
-	HAL_GPIO_Init(USARTx_RX_GPIO_PORT, &GPIO_InitStructure);
+    /* UART RX GPIO pin configuration  */
+    GPIO_InitStructure.Pin = USARTx_RX_PIN;
+    GPIO_InitStructure.Alternate = USARTx_RX_AF;
+    HAL_GPIO_Init(USARTx_RX_GPIO_PORT, &GPIO_InitStructure);
+  }
 }
 
-/**
-  * @}
-  */ 
-    
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+void HAL_MspInit(void)
+{
+  __HAL_RCC_SYSCFG_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
+}
 
 void SysTick_Handler(void)
 {
