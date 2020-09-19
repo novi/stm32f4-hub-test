@@ -14,6 +14,10 @@
  extern "C" {
 #endif
 
+
+UART_HandleTypeDef hUartHandle;
+void log_write_char(char c);
+
 uint8_t LOG_INIT(USART_TypeDef *usart, uint32_t baudrate);
 void LOG(const char *__msg, ...);
 void LOG1(const char *__msg, ...);

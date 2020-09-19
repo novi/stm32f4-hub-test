@@ -14,7 +14,7 @@
 #define LOGGER_MAXLEN 	250
 #define LOGGER_TIMEOUT	10
 
-static UART_HandleTypeDef hUartHandle;
+UART_HandleTypeDef hUartHandle;
 
 uint8_t LOG_INIT(USART_TypeDef *usart, uint32_t baudrate)
 {
@@ -30,9 +30,51 @@ uint8_t LOG_INIT(USART_TypeDef *usart, uint32_t baudrate)
 	return (HAL_UART_Init(&hUartHandle) == HAL_OK);
 }
 
+volatile static uint8_t is_sending = 0;
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == hUartHandle.Instance) {
+        is_sending = 0;
+    }
+}
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == hUartHandle.Instance) {
+        is_sending = 0;
+    }
+}
+
+void HAL_UART_AbortCpltCallback (UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == hUartHandle.Instance) {
+        is_sending = 0;
+    }
+}
+
+void HAL_UART_AbortTransmitCpltCallback (UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == hUartHandle.Instance) {
+        is_sending = 0;
+    }
+}
+
+static uint8_t tx_buffer;
+void log_write_char(char c)
+{
+    while(is_sending);
+    is_sending = 1;
+    tx_buffer = c;
+    HAL_UART_Transmit_IT(&hUartHandle, &tx_buffer,  1);
+}
+
 void write_string(const char *data)
 {
-	HAL_UART_Transmit(&hUartHandle, (uint8_t *)data, strlen(data), LOGGER_TIMEOUT);
+    for(size_t i = 0; i < strlen(data); i++) {
+        log_write_char(data[i]);
+    }
+	// HAL_UART_Transmit(&hUartHandle, (uint8_t *)data, strlen(data), LOGGER_TIMEOUT);
 }
 
 void LOG(const char *__msg, ...)

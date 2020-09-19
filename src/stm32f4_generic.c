@@ -128,6 +128,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     GPIO_InitStructure.Pin = USARTx_RX_PIN;
     GPIO_InitStructure.Alternate = USARTx_RX_AF;
     HAL_GPIO_Init(USARTx_RX_GPIO_PORT, &GPIO_InitStructure);
+
+    HAL_NVIC_SetPriority(USART2_IRQn, 1, 0);
+    HAL_NVIC_EnableIRQ(USART2_IRQn);
   }
 }
 
@@ -149,4 +152,9 @@ void OTG_FS_IRQHandler(void)
 
 	if(_hHCD[ID_USB_HOST_FS].Instance == USB_OTG_FS)
 		HAL_HCD_IRQHandler(&_hHCD[ID_USB_HOST_FS]);
+}
+
+void USART2_IRQHandler(void)
+{
+  HAL_UART_IRQHandler(&hUartHandle);
 }
