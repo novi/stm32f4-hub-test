@@ -147,7 +147,7 @@ int main(void)
 
 	LOG_INIT(USARTx, 115200);
 
-	LOG("\033[2J\033[H");
+	// LOG("\033[2J\033[H");
 	LOG(" ");
 	LOG("APP RUNNING...");
 	LOG("MCU-ID %08X", DBGMCU->IDCODE);
